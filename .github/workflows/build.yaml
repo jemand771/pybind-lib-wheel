@@ -29,7 +29,7 @@ jobs:
           python -m cibuildwheel --print-build-identifiers | jq -nR '{"only": inputs, "os": "${{ matrix.os }}"}' | jq -sc > matrix.json
       - uses: actions/upload-artifact@v4
         with:
-          name: matrix-${{ matrix.os }}.json
+          name: matrix-${{ matrix.os }}
           path: matrix.json
   collect:
     runs-on: ubuntu-latest
@@ -39,13 +39,26 @@ jobs:
       matrix: ${{ steps.collect.outputs.matrix }}
     steps:
       - uses: actions/download-artifact@v5
-        name: matrix-*.json
-      - run: find . && false
+        name: matrix-*
+      - id: collect
+        run: echo "matrix=$(cat matrix-*/matrix.json | jq -sc)" >> "$GITHUB_OUTPUT"
+  cleanup:
+    runs-on: ubuntu-latest
+    needs:
+      - collect
+    steps:
+      - uses: geekyeggo/delete-artifact@v5
+        with:
+          name: matrix-*
   build:
-    name: ${{ matrix.os }}
+    name: ${{ matrix.os }}-${{ matrix.only }}
     needs:
       - collect
     runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        includes: ${{ fromJSON(needs.collect.outputs.matrix ) }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
