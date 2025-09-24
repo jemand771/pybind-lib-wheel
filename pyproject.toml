@@ -1,0 +1,14 @@
+[build-system]
+requires = [
+  "scikit-build-core>=0.3.3",
+  "pybind11>=2.12",
+  "setuptools-scm>=8.0",
+]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+cmake.define.CMAKE_INSTALL_LIBDIR = "/usr/lib"
+
+[project]
+name = "mymod"
+version = "9999.9" # supply chain attack lol
