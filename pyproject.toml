@@ -7,8 +7,24 @@ requires = [
 build-backend = "scikit_build_core.build"
 
 [tool.scikit-build]
-cmake.define.CMAKE_INSTALL_LIBDIR = "/usr/lib"
+# linux-only hack, creates C:\usr on windows (big nono)
+# TODO find another way
+# cmake.define.CMAKE_INSTALL_LIBDIR = "/usr/lib"
 
 [project]
 name = "mymod"
 version = "9999.9" # supply chain attack lol
+
+[tool.cibuildwheel.windows]
+before-build = "pip install delvewheel"
+# TODO get wheel fixups working on windows
+# current state of things: dlls get mangled (properly?) but aren't found.
+# `cd`ing into `.venv\Lib\site-packages` (where the platlib dlls get placed) makes things work.
+# surely that can't be the intended way, right..?
+repair-wheel-command = [
+  # "unzip {wheel}",
+  # "zip {wheel} *.pyd *.dist-info",
+  # `--add-path bin` is also nice
+  "delvewheel repair --analyze-existing --add-path bin -w {dest_dir} {wheel}",
+]
+# repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel}"
