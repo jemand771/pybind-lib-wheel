@@ -6,7 +6,7 @@ on:
 
 jobs:
   generate:
-    name: ${{ matrix.os }}
+    name: generate-${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
