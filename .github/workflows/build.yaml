@@ -59,7 +59,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        includes: ${{ fromJSON(needs.collect.outputs.matrix) }}
+        include: ${{ fromJSON(needs.collect.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
