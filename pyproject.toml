@@ -30,3 +30,6 @@ repair-wheel-command = "LD_LIBRARY_PATH=/tmp/.cibw-cache auditwheel repair -w {d
 [tool.cibuildwheel.windows]
 before-build = "pip install delvewheel"
 repair-wheel-command = "delvewheel repair --add-path /tmp/.cibw-cache/Release -w {dest_dir} {wheel}"
+
+[tool.cibuildwheel.macos]
+repair-wheel-command = "DYLD_LIBRARY_PATH=/tmp/.cibw-cache delocate-wheel -w {dest_dir} {wheel}"
