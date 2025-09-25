@@ -17,6 +17,7 @@ wheel.exclude = [
   "share",
   "include",
 ]
+# TOOD this leaks on windows
 build-dir = "/build"
 
 [project]
@@ -38,6 +39,6 @@ repair-wheel-command = [
   # "unzip {wheel}",
   # "zip {wheel} *.pyd *.dist-info",
   # `--add-path bin` is also nice
-  "delvewheel repair --analyze-existing --add-path bin -w {dest_dir} {wheel}",
+  "delvewheel repair --add-path /build/Release -w {dest_dir} {wheel}",
 ]
 # repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel}"
