@@ -18,15 +18,15 @@ wheel.exclude = [
 #      I'd like to use `{root.path}/.cibw-cache/{wheel_tag}`
 #      but repair-wheel-command only templates {wheel} and {dest_dir}.
 # build-dir = "{root.path}/.cibw-cache/{wheel_tag}"
-build-dir = "/build"
+build-dir = "/tmp/.cibw-cache"
 
 [project]
 name = "mymod"
 version = "9999.9" # supply chain attack lol
 
 [tool.cibuildwheel.linux]
-repair-wheel-command = "LD_LIBRARY_PATH=/build auditwheel repair -w {dest_dir} {wheel}"
+repair-wheel-command = "LD_LIBRARY_PATH=/tmp/.cibw-cache auditwheel repair -w {dest_dir} {wheel}"
 
 [tool.cibuildwheel.windows]
 before-build = "pip install delvewheel"
-repair-wheel-command = "delvewheel repair --add-path /build/Release -w {dest_dir} {wheel}"
+repair-wheel-command = "delvewheel repair --add-path /tmp/.cibw-cache/Release -w {dest_dir} {wheel}"
