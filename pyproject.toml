@@ -10,10 +10,22 @@ build-backend = "scikit_build_core.build"
 # linux-only hack, creates C:\usr on windows (big nono)
 # TODO find another way
 # cmake.define.CMAKE_INSTALL_LIBDIR = "/usr/lib"
+wheel.exclude = [
+  "bin",
+  "lib",
+  "lib64",
+  "share",
+  "include",
+]
 
 [project]
 name = "mymod"
 version = "9999.9" # supply chain attack lol
+
+[tool.cibuildwheel.linux]
+repair-wheel-command = [
+  "LD_LIBRARY_PATH=/project/build auditwheel repair -w {dest_dir} {wheel}",
+]
 
 [tool.cibuildwheel.windows]
 before-build = "pip install delvewheel"
