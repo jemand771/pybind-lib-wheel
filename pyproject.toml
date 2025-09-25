@@ -17,6 +17,7 @@ wheel.exclude = [
   "share",
   "include",
 ]
+build-dir = "/build"
 
 [project]
 name = "mymod"
@@ -24,7 +25,7 @@ version = "9999.9" # supply chain attack lol
 
 [tool.cibuildwheel.linux]
 repair-wheel-command = [
-  "LD_LIBRARY_PATH=/project/build auditwheel repair -w {dest_dir} {wheel}",
+  "LD_LIBRARY_PATH=/build auditwheel repair -w {dest_dir} {wheel}",
 ]
 
 [tool.cibuildwheel.windows]
